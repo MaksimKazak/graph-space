@@ -1,0 +1,22 @@
+{
+  "name": "graph-space",
+  "version": "1.0.0",
+  "description": "Graph space",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaksimKazak/graph-space.git"
+  },
+  "author": "Maksim Kazak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaksimKazak/graph-space/issues"
+  },
+  "homepage": "https://github.com/MaksimKazak/graph-space#readme",
+  "dependencies": {
+    "vis-network": "^6.4.7"
+  }
+}
