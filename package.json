@@ -18,5 +18,9 @@
   "homepage": "https://github.com/MaksimKazak/graph-space#readme",
   "dependencies": {
     "vis-network": "^6.4.7"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   }
 }
