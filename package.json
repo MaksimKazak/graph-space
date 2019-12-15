@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack && webpack-dev-server",
+    "start": "webpack-dev-server",
     "build": "webpack --mode production"
   },
   "repository": {
@@ -30,7 +30,8 @@
     "not ie <= 8"
   ],
   "dependencies": {
-    "vis-network": "^6.4.7"
+    "vis-network": "^6.4.7",
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",
@@ -38,7 +39,13 @@
     "@babel/preset-typescript": "^7.7.4",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.3.2",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
     "style-loader": "^1.0.1",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.3",
+    "vue-loader": "^15.7.2",
+    "vue-template-compiler": "^2.6.11",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
