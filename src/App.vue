@@ -1,50 +1,68 @@
 <template>
   <div id="app">
-    <div id='mynetwork'></div>
+    <div id='mynetwork'>
+    </div>
+    <div id="child" class="child"></div>
   </div>
 </template>
 
 <script lang="ts">
 import vis from 'vis-network';
+import graph from './config/graph';
+const _ = require('lodash');
 
 export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      nodes: null,
+      edges: null,
+      network: null,
+      childNetwork: null,
+      selectedNode: null
     }
   },
-  mounted () {
-      console.log('mounted');
-    let nodes = new vis.DataSet([
-        {id: 1, label: 'Node 1', color: '#756338'},
-        {id: 2, label: 'Node 2'},
-        {id: 3, label: 'Node 3'},
-        {id: 4, label: 'Node 4'},
-        {id: 5, label: 'Node 5'}
-    ]);
+  mounted (): void {
+    this.nodes = new vis.DataSet(graph.nodes);
 
-    let edges = new vis.DataSet([
-        {from: 1, to: 3, color: '#277dea'},
-        {from: 1, to: 2, color: '#277dea'},
-        {from: 2, to: 4, color: '#277dea'},
-        {from: 2, to: 5, color: '#277dea'},
-    ]);
+    this.edges = new vis.DataSet(graph.edges);
 
     let container = document.getElementById('mynetwork');
     let data = {
-        nodes: nodes,
-        edges: edges
+        nodes: this.nodes,
+        edges: this.edges
     };
     let options = {};
-    let network = new vis.Network(container, data, options);
+    this.network = new vis.Network(container, data, options);
 
-    network.on('selectNode', event => {
-        console.log('select', event);
-    });
-    network.on('deselectNode', event => {
-        console.log('deselect ', event);
+    this.network.on('click', (event: vis.NetworkEvents) => {
+        let node = event.nodes[0];
+        this.selectedNode = _.find(graph.nodes, {id: node});
+        let childContainer = document.getElementById('child');
+        childContainer.style.display = '';
+        let data = {
+            nodes: new vis.DataSet(this.selectedNode.child.nodes),
+            edges: new vis.DataSet(this.selectedNode.child.edges)
+        }
+        this.childNetwork = new vis.Network(childContainer, data, {});
     });
   }
 }
 </script>
+
+<style>
+
+.child {
+  width: 600px;
+  height: 600px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white;
+  border: 1px solid grey;
+  border-radius: 8px;
+  z-index: 1000;
+  display: none;
+}
+
+</style>

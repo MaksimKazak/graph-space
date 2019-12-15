@@ -30,6 +30,7 @@
     "not ie <= 8"
   ],
   "dependencies": {
+    "lodash": "^4.17.15",
     "vis-network": "^6.4.7",
     "vue": "^2.6.11"
   },
