@@ -1,54 +1,22 @@
 {
   "name": "graph-space",
-  "version": "1.0.0",
-  "description": "Graph space",
-  "main": "index.js",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server",
-    "build": "webpack --mode production"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MaksimKazak/graph-space.git"
-  },
-  "author": "Maksim Kazak",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/MaksimKazak/graph-space/issues"
-  },
-  "homepage": "https://github.com/MaksimKazak/graph-space#readme",
-  "babel": {
-    "presets": [
-      "@babel/env",
-      "@babel/typescript"
-    ]
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
   "dependencies": {
+    "core-js": "^3.4.3",
     "lodash": "^4.17.15",
     "vis-network": "^6.4.7",
-    "vue": "^2.6.11"
+    "vue": "^2.6.10"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.5",
-    "@babel/preset-env": "^7.7.6",
-    "@babel/preset-typescript": "^7.7.4",
-    "babel-loader": "^8.0.6",
-    "css-loader": "^3.3.2",
-    "node-sass": "^4.13.0",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.1",
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.7.3",
-    "vue-loader": "^15.7.2",
-    "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "@vue/cli-plugin-babel": "^4.1.0",
+    "@vue/cli-service": "^4.1.0",
+    "babel-eslint": "^10.0.3",
+    "vue-template-compiler": "^2.6.10"
   }
 }
