@@ -176,5 +176,112 @@ const radicals = [
       },
     ],
   },
+  {
+    id: 4,
+    nodes: [
+      {
+        id: 22,
+        label: 'C',
+      },
+      {
+        id: 23,
+        label: 'C',
+      },
+      {
+        id: 24,
+        label: 'C',
+      },
+      {
+        id: 25,
+        label: 'C',
+      },
+      {
+        id: 26,
+        label: 'H',
+      },
+      {
+        id: 27,
+        label: 'H',
+      },
+      {
+        id: 28,
+        label: 'H',
+      },
+      {
+        id: 29,
+        label: 'H',
+      },
+      {
+        id: 30,
+        label: 'H',
+      },
+      {
+        id: 31,
+        label: 'H',
+      },
+      {
+        id: 32,
+        label: 'H',
+      },
+      {
+        id: 33,
+        label: 'H',
+      },
+      {
+        id: 34,
+        label: 'H',
+      },
+    ],
+    edges: [
+      {
+        from: 23,
+        to: 22,
+      },
+      {
+        from: 24,
+        to: 22,
+      },
+      {
+        from: 25,
+        to: 22,
+      },
+      {
+        from: 26,
+        to: 23,
+      },
+      {
+        from: 27,
+        to: 23,
+      },
+      {
+        from: 28,
+        to: 23,
+      },
+      {
+        from: 29,
+        to: 24,
+      },
+      {
+        from: 30,
+        to: 24,
+      },
+      {
+        from: 31,
+        to: 24,
+      },
+      {
+        from: 32,
+        to: 25,
+      },
+      {
+        from: 33,
+        to: 25,
+      },
+      {
+        from: 34,
+        to: 25,
+      },
+    ],
+  },
 ];
 export { radicals };
