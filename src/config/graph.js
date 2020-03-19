@@ -15,12 +15,12 @@ const baseGraph = {
     {
       id: -4,
       label: 'C',
-      radical: 1,
+      bracing: 1,
     },
     {
       id: -5,
       label: 'C',
-      radical: 2,
+      bracing: 2,
     },
     {
       id: -6,

@@ -177,3 +177,4 @@ const radicals = [
     ],
   },
 ];
+export { radicals };

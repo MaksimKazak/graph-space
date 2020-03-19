@@ -9,51 +9,94 @@
 <script>
 import vis from 'vis-network';
 import _ from 'lodash';
-import graph from './config/graph';
+import { baseGraph } from './config/graph';
+import { radicals } from './config/radicals';
 
 export default {
   name: 'app',
   data() {
     return {
-      nodes: null,
-      edges: null,
+      graph: {
+        nodes: [],
+        edges: [],
+      },
+      count: 1,
+      container: null,
       network: null,
       childNetwork: null,
       selectedNode: null,
     };
   },
   mounted() {
-    this.nodes = new vis.DataSet(graph.nodes);
+    this.container = document.getElementById('mynetwork');
+    this.startAlgorithm();
+    this.showGraph();
+  },
+  methods: {
+    startAlgorithm() {
+      for (let i = 0; i < radicals.length; i++) {
+        for (let j = i; j < radicals.length; j++) {
+          let child = _.cloneDeep(baseGraph);
+          const firstRadical = _.cloneDeep(radicals[i]);
+          const secondRadical = _.cloneDeep(radicals[j]);
+          secondRadical.nodes.forEach(node => {
+            node.id = '+' + node.id;
+          });
+          secondRadical.edges.forEach(edge => {
+            edge.to = '+' + edge.to;
+            edge.from = '+' + edge.from;
+          });
+          child.nodes.push(...firstRadical.nodes);
+          child.nodes.push(...secondRadical.nodes);
+          child.edges.push(...firstRadical.edges);
+          child.edges.push(...secondRadical.edges);
+          const firstBracing = _.find(child.nodes, { bracing: 1 });
+          const secondBracing = _.find(child.nodes, { bracing: 2 });
+          child.edges.push({
+            from: firstRadical.nodes[0].id,
+            to: firstBracing.id,
+          });
+          child.edges.push({
+            from: secondRadical.nodes[0].id,
+            to: secondBracing.id,
+          });
+          this.graph.nodes.push({
+            id: this.count,
+            label: `node ${this.count}`,
+            child,
+          });
+          this.count++;
+        }
+      }
+    },
+    showGraph() {
+      const data = {
+        nodes: this.graph.nodes,
+        edges: this.graph.edges,
+      };
+      const options = {};
+      this.network = new vis.Network(this.container, data, options);
 
-    this.edges = new vis.DataSet(graph.edges);
-
-    const container = document.getElementById('mynetwork');
-    const data = {
-      nodes: this.nodes,
-      edges: this.edges,
-    };
-    const options = {};
-    this.network = new vis.Network(container, data, options);
-
-    this.network.on('click', (event) => {
+      this.network.on('click', (event) => {
         const node = event.nodes[0];
         if (!node) {
           return;
         }
-        this.selectedNode = _.find(graph.nodes, {id: node});
+        this.selectedNode = _.find(this.graph.nodes, { id: node });
         const childContainer = document.getElementById('child');
         childContainer.style.display = '';
         const data = {
           nodes: new vis.DataSet(this.selectedNode.child.nodes),
           edges: new vis.DataSet(this.selectedNode.child.edges),
-        }
+        };
         this.childNetwork = new vis.Network(childContainer, data, {});
         const closeButton = document.createElement('button');
         closeButton.innerHTML = 'Close';
         closeButton.id = 'child-close';
         closeButton.onclick = () => {childContainer.style.display = 'none'};
         childContainer.appendChild(closeButton);
-    });
+      });
+    },
   },
 };
 </script>
