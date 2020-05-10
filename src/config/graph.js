@@ -53,25 +53,3 @@ const baseGraph = {
 };
 
 export { baseGraph };
-
-export default {
-  nodes: [
-    {
-      id: 1,
-      label: 'Node 1',
-      child: baseGraph,
-    },
-    {
-      id: 2,
-      label: 'Node 2',
-      child: baseGraph,
-    },
-  ],
-  edges: [
-    {
-      from: 1,
-      to: 2,
-      color: '#277dea'
-    },
-  ]
-}

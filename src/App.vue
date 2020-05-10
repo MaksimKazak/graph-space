@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="mynetwork"></div>
+    <div class="fields"></div>
     <div id="child" class="child" style="display: none">
     </div>
   </div>
@@ -10,21 +10,19 @@
 import vis from 'vis-network';
 import _ from 'lodash';
 import { baseGraph } from './config/graph';
-import { radicals } from './config/radicals';
+import { radicals, generateRadicals } from './config/radicals';
 
 export default {
   name: 'app',
   data() {
     return {
-      graph: {
-        nodes: [],
-        edges: [],
-      },
+      parents: [],
+      networks: [],
       count: 1,
       container: null,
-      network: null,
       childNetwork: null,
       selectedNode: null,
+      radicals,
     };
   },
   mounted() {
@@ -34,67 +32,87 @@ export default {
   },
   methods: {
     startAlgorithm() {
-      for (let i = 0; i < radicals.length; i++) {
-        for (let j = i; j < radicals.length; j++) {
-          let child = _.cloneDeep(baseGraph);
-          const firstRadical = _.cloneDeep(radicals[i]);
-          const secondRadical = _.cloneDeep(radicals[j]);
-          secondRadical.nodes.forEach(node => {
-            node.id = '+' + node.id;
-          });
-          secondRadical.edges.forEach(edge => {
-            edge.to = '+' + edge.to;
-            edge.from = '+' + edge.from;
-          });
-          child.nodes.push(...firstRadical.nodes);
-          child.nodes.push(...secondRadical.nodes);
-          child.edges.push(...firstRadical.edges);
-          child.edges.push(...secondRadical.edges);
-          const firstBracing = _.find(child.nodes, { bracing: 1 });
-          const secondBracing = _.find(child.nodes, { bracing: 2 });
-          child.edges.push({
-            from: firstRadical.nodes[0].id,
-            to: firstBracing.id,
-          });
-          child.edges.push({
-            from: secondRadical.nodes[0].id,
-            to: secondBracing.id,
-          });
-          this.graph.nodes.push({
+      for (let i = 0; i < this.radicals.length; i++) {
+        for (let j = i; j < this.radicals.length; j++) {
+          const [firstRadical, secondRadical] = this.getRadicals(i, j);
+          const molecule = this.getComposedMolecule(firstRadical, secondRadical);
+          this.parents.push({
             id: this.count,
-            label: `node ${this.count}`,
-            child,
+            label: `${firstRadical.formula} + ${secondRadical.formula}`,
+            child: molecule,
           });
           this.count++;
         }
       }
     },
+    getRadicals(i, j) {
+      const firstRadical = _.cloneDeep(this.radicals[i]);
+      const secondRadical = _.cloneDeep(this.radicals[j]);
+      secondRadical.nodes.forEach(node => {
+        node.id = '+' + node.id;
+      });
+      secondRadical.edges.forEach(edge => {
+        edge.to = '+' + edge.to;
+        edge.from = '+' + edge.from;
+      });
+      return [firstRadical, secondRadical];
+    },
+    getComposedMolecule(firstRadical, secondRadical) {
+      let molecule = _.cloneDeep(baseGraph);
+      molecule.nodes.push(...firstRadical.nodes);
+      molecule.nodes.push(...secondRadical.nodes);
+      molecule.edges.push(...firstRadical.edges);
+      molecule.edges.push(...secondRadical.edges);
+      const firstBracing = _.find(molecule.nodes, { bracing: 1 });
+      const secondBracing = _.find(molecule.nodes, { bracing: 2 });
+      molecule.edges.push({
+        from: firstRadical.nodes[0].id,
+        to: firstBracing.id,
+      });
+      molecule.edges.push({
+        from: secondRadical.nodes[0].id,
+        to: secondBracing.id,
+      });
+      return molecule;
+    },
     showGraph() {
-      const data = {
-        nodes: this.graph.nodes,
-        edges: this.graph.edges,
-      };
-      const options = {};
-      this.network = new vis.Network(this.container, data, options);
+      const fields = document.querySelector('.fields');
+      this.parents.forEach(parent => {
+        let network = document.createElement('div');
+        network.classList.add('network');
+        fields.appendChild(network);
 
-      this.network.on('click', (event) => {
-        const node = event.nodes[0];
-        if (!node) {
-          return;
-        }
-        this.selectedNode = _.find(this.graph.nodes, { id: node });
-        const childContainer = document.getElementById('child');
-        childContainer.style.display = '';
         const data = {
-          nodes: new vis.DataSet(this.selectedNode.child.nodes),
-          edges: new vis.DataSet(this.selectedNode.child.edges),
+          nodes: [parent],
+          edges: [],
         };
-        this.childNetwork = new vis.Network(childContainer, data, {});
-        const closeButton = document.createElement('button');
-        closeButton.innerHTML = 'Close';
-        closeButton.id = 'child-close';
-        closeButton.onclick = () => {childContainer.style.display = 'none'};
-        childContainer.appendChild(closeButton);
+        const options = {};
+        const visNetwork = new vis.Network(network, data, options);
+        this.networks.push(visNetwork);
+
+        visNetwork.on('click', (event) => {
+          const node = event.nodes[0];
+          if (!node) {
+            return;
+          }
+          this.selectedNode = _.find(this.parents, { id: node });
+          const childContainer = document.getElementById('child');
+          childContainer.style.display = '';
+          const data = {
+            nodes: new vis.DataSet(this.selectedNode.child.nodes),
+            edges: new vis.DataSet(this.selectedNode.child.edges),
+          };
+          this.childNetwork = new vis.Network(childContainer, data, {
+            layout: {
+              improvedLayout: false,
+            },
+          });
+          const closeButton = document.createElement('button');
+          closeButton.innerHTML = 'Close';
+          closeButton.id = 'child-close';
+          closeButton.onclick = () => {childContainer.style.display = 'none'};
+          childContainer.appendChild(closeButton);
+        });
       });
     },
   },
@@ -109,9 +127,18 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-#mynetwork {
-  width: 100vw;
-  height: 100vh;
+body {
+  margin: 0;
+}
+.fields {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.network {
+  width: calc(20% - 2px);
+  height: 350px;
+  border: 1px solid blue;
 }
 .child {
   width: 600px;

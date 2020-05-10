@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const radicals = [
   {
     id: 1,
@@ -744,4 +746,36 @@ const radicals = [
     ],
   },
 ];
-export { radicals };
+
+const generateRadicals = (radicals) => {
+  radicals = _.cloneDeep(radicals);
+  let generatedRadicals = [];
+  radicals.forEach(radical => {
+    let derivedRadicals = [];
+    radical.nodes.forEach((node) => {
+      if (node.label === 'H') {
+        node.label = 'F';
+
+        let derivativeRadical = _.cloneDeep(radical);
+        derivativeRadical.id = derivedRadicals.length + '' + radical.id;
+        derivativeRadical.parentId = derivedRadicals.length
+          ? derivedRadicals[derivedRadicals.length - 1].id :
+          radical.id;
+
+        derivativeRadical.nodes.forEach(node => {
+          node.id = derivedRadicals.length + '' + node.id;
+        });
+        derivativeRadical.edges.forEach(edge => {
+          edge.to = derivedRadicals.length + '' + edge.to;
+          edge.from = derivedRadicals.length + '' + edge.from;
+        });
+
+        derivedRadicals.push(derivativeRadical);
+      }
+    });
+    generatedRadicals.push(...derivedRadicals);
+  });
+  return generatedRadicals;
+};
+
+export { radicals, generateRadicals };
