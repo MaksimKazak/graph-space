@@ -2,42 +2,55 @@ const baseGraph = {
   nodes: [
     {
       id: -1,
-      label: 'M'
+      label: 'M',
+      x: 0,
+      y: 0,
+      physics: false,
     },
     {
       id: -2,
-      label: 'O'
+      label: 'O',
+      x: 200,
+      y: 0,
+      physics: false,
     },
     {
       id: -3,
-      label: 'O'
+      label: 'O',
+      x: 0,
+      y: 200,
+      physics: false,
     },
     {
       id: -4,
       label: 'C',
       bracing: 1,
+      x: 320,
+      y: 120,
+      physics: false,
     },
     {
       id: -5,
       label: 'C',
       bracing: 2,
+      x: 120,
+      y: 320,
+      physics: false,
     },
     {
       id: -6,
-      label: 'C'
+      label: 'C',
+      x: 320,
+      y: 320,
+      physics: false,
     },
     {
       id: -7,
-      label: 'H'
+      label: 'H',
+      x: 400,
+      y: 400,
+      physics: false,
     },
-    // {
-    //   id: 8,
-    //   label: 'R1'
-    // },
-    // {
-    //   id: 9,
-    //   label: 'R2'
-    // },
   ],
   edges: [
     {from: -1, to: -2, color: '#277dea'},

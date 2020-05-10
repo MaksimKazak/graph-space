@@ -11,6 +11,10 @@ import vis from 'vis-network';
 import _ from 'lodash';
 import { baseGraph } from './config/graph';
 import { radicals, generateRadicals } from './config/radicals';
+const FIRST_RADICAL_X = 540;
+const FIRST_RADICAL_Y = 0;
+const SECOND_RADICAL_X = 0;
+const SECOND_RADICAL_Y = 540;
 
 export default {
   name: 'app',
@@ -39,7 +43,7 @@ export default {
           this.parents.push({
             id: this.count,
             label: `${firstRadical.formula} + ${secondRadical.formula}`,
-            child: molecule,
+            structure: molecule,
           });
           this.count++;
         }
@@ -65,6 +69,10 @@ export default {
       molecule.edges.push(...secondRadical.edges);
       const firstBracing = _.find(molecule.nodes, { bracing: 1 });
       const secondBracing = _.find(molecule.nodes, { bracing: 2 });
+      firstRadical.nodes[0].x = FIRST_RADICAL_X;
+      firstRadical.nodes[0].y = FIRST_RADICAL_Y;
+      secondRadical.nodes[0].x = SECOND_RADICAL_X;
+      secondRadical.nodes[0].y = SECOND_RADICAL_Y;
       molecule.edges.push({
         from: firstRadical.nodes[0].id,
         to: firstBracing.id,
@@ -86,7 +94,11 @@ export default {
           nodes: [parent],
           edges: [],
         };
-        const options = {};
+        const options = {
+          layout: {
+            improvedLayout: true,
+          },
+        };
         const visNetwork = new vis.Network(network, data, options);
         this.networks.push(visNetwork);
 
@@ -99,14 +111,10 @@ export default {
           const childContainer = document.getElementById('child');
           childContainer.style.display = '';
           const data = {
-            nodes: new vis.DataSet(this.selectedNode.child.nodes),
-            edges: new vis.DataSet(this.selectedNode.child.edges),
+            nodes: new vis.DataSet(this.selectedNode.structure.nodes),
+            edges: new vis.DataSet(this.selectedNode.structure.edges),
           };
-          this.childNetwork = new vis.Network(childContainer, data, {
-            layout: {
-              improvedLayout: false,
-            },
-          });
+          this.childNetwork = new vis.Network(childContainer, data, options);
           const closeButton = document.createElement('button');
           closeButton.innerHTML = 'Close';
           closeButton.id = 'child-close';
@@ -143,7 +151,7 @@ body {
 .child {
   width: 600px;
   height: 600px;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background-color: white;

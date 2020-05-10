@@ -8,6 +8,7 @@ const radicals = [
       {
         id: 1,
         label: 'C',
+        physics: false,
       },
       {
         id: 2,
@@ -44,6 +45,7 @@ const radicals = [
       {
         id: 5,
         label: 'C',
+        physics: false,
       },
       {
         id: 6,
@@ -99,11 +101,12 @@ const radicals = [
   },
   {
     id: 3,
-    formula: 'C3H7',
+    formula: '(CH3)2CH',
     nodes: [
       {
         id: 12,
         label: 'C',
+        physics: false,
       },
       {
         id: 13,
@@ -188,6 +191,7 @@ const radicals = [
       {
         id: 22,
         label: 'C',
+        physics: false,
       },
       {
         id: 23,
@@ -296,6 +300,7 @@ const radicals = [
       {
         id: 35,
         label: 'C',
+        physics: false,
       },
       {
         id: 36,
@@ -376,6 +381,7 @@ const radicals = [
       {
         id: 43,
         label: 'C',
+        physics: false,
       },
       {
         id: 44,
@@ -456,6 +462,7 @@ const radicals = [
       {
         id: 51,
         label: 'C',
+        physics: false,
       },
       {
         id: 52,
@@ -536,6 +543,7 @@ const radicals = [
       {
         id: 59,
         label: 'C',
+        physics: false,
       },
       {
         id: 60,
@@ -644,6 +652,7 @@ const radicals = [
       {
         id: 70,
         label: 'C',
+        physics: false,
       },
       {
         id: 71,
@@ -700,11 +709,11 @@ const radicals = [
         to: 71,
       },
       {
-        from: 70,
+        from: 71,
         to: 72,
       },
       {
-        from: 70,
+        from: 71,
         to: 73,
       },
       {
@@ -712,15 +721,15 @@ const radicals = [
         to: 74,
       },
       {
-        from: 71,
+        from: 70,
         to: 75,
       },
       {
-        from: 71,
+        from: 72,
         to: 76,
       },
       {
-        from: 71,
+        from: 72,
         to: 77,
       },
       {
@@ -728,11 +737,11 @@ const radicals = [
         to: 78,
       },
       {
-        from: 72,
+        from: 71,
         to: 79,
       },
       {
-        from: 72,
+        from: 73,
         to: 80,
       },
       {
@@ -742,6 +751,91 @@ const radicals = [
       {
         from: 73,
         to: 82,
+      },
+    ],
+  },
+  {
+    id: 10,
+    formula: 'C3H7',
+    nodes: [
+      {
+        id: 83,
+        label: 'C',
+        physics: false,
+      },
+      {
+        id: 84,
+        label: 'C',
+      },
+      {
+        id: 85,
+        label: 'C',
+      },
+      {
+        id: 86,
+        label: 'H',
+      },
+      {
+        id: 87,
+        label: 'H',
+      },
+      {
+        id: 88,
+        label: 'H',
+      },
+      {
+        id: 89,
+        label: 'H',
+      },
+      {
+        id: 90,
+        label: 'H',
+      },
+      {
+        id: 91,
+        label: 'H',
+      },
+      {
+        id: 92,
+        label: 'H',
+      },
+    ],
+    edges: [
+      {
+        from: 83,
+        to: 84,
+      },
+      {
+        from: 84,
+        to: 85,
+      },
+      {
+        from: 83,
+        to: 86,
+      },
+      {
+        from: 83,
+        to: 87,
+      },
+      {
+        from: 84,
+        to: 88,
+      },
+      {
+        from: 84,
+        to: 89,
+      },
+      {
+        from: 85,
+        to: 90,
+      },
+      {
+        from: 85,
+        to: 91,
+      },
+      {
+        from: 85,
+        to: 92,
       },
     ],
   },
