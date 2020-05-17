@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { baseGraph } from "./graph";
 
 const radicals = [
   {
@@ -101,7 +102,8 @@ const radicals = [
   },
   {
     id: 3,
-    formula: '(CH3)2CH',
+    complexFormula: '(CH3)2CH',
+    formula: 'C3H7',
     nodes: [
       {
         id: 12,
@@ -186,7 +188,8 @@ const radicals = [
   },
   {
     id: 4,
-    formula: '(CH3)3C',
+    complexFormula: '(CH3)3C',
+    formula: 'C4H9',
     nodes: [
       {
         id: 22,
@@ -841,35 +844,108 @@ const radicals = [
   },
 ];
 
-const generateRadicals = (radicals) => {
-  radicals = _.cloneDeep(radicals);
-  let generatedRadicals = [];
-  radicals.forEach(radical => {
-    let derivedRadicals = [];
-    radical.nodes.forEach((node) => {
-      if (node.label === 'H') {
-        node.label = 'F';
+const FIRST_RADICAL_X = 540;
+const FIRST_RADICAL_Y = 0;
+const SECOND_RADICAL_X = 0;
+const SECOND_RADICAL_Y = 540;
+const ATOMS = ['C', 'H', 'F', 'O', 'S', 'Se'];
 
-        let derivativeRadical = _.cloneDeep(radical);
-        derivativeRadical.id = derivedRadicals.length + '' + radical.id;
-        derivativeRadical.parentId = derivedRadicals.length
-          ? derivedRadicals[derivedRadicals.length - 1].id :
-          radical.id;
+const convertNode = (derivedRadicals) => (node, index) => {
+  if (node.label === 'H') {
+    let derivativeRadical = _.cloneDeep(derivedRadicals[derivedRadicals.length - 1]);
+    derivativeRadical.nodes[index].label = 'F';
+    derivativeRadical.id = derivedRadicals.length + '' + derivedRadicals[derivedRadicals.length - 1].id;
 
-        derivativeRadical.nodes.forEach(node => {
-          node.id = derivedRadicals.length + '' + node.id;
-        });
-        derivativeRadical.edges.forEach(edge => {
-          edge.to = derivedRadicals.length + '' + edge.to;
-          edge.from = derivedRadicals.length + '' + edge.from;
-        });
-
-        derivedRadicals.push(derivativeRadical);
-      }
+    derivativeRadical.nodes.forEach(node => {
+      node.id = derivedRadicals.length + '' + node.id;
     });
-    generatedRadicals.push(...derivedRadicals);
-  });
-  return generatedRadicals;
+    derivativeRadical.edges.forEach(edge => {
+      edge.to = derivedRadicals.length + '' + edge.to;
+      edge.from = derivedRadicals.length + '' + edge.from;
+    });
+    let atomsQuantityObject = derivativeRadical.nodes.reduce((acc, node) => {
+      acc[node.label] = acc[node.label] ? acc[node.label] + 1 : 1;
+      return acc;
+    }, {});
+    derivativeRadical.formula =  ATOMS.reduce((acc, atom) => {
+      return acc +
+        (atomsQuantityObject[atom]
+          ? `${atom + (atomsQuantityObject[atom] === 1 ? '' : atomsQuantityObject[atom])}`
+          : '');
+    }, '');
+
+    derivedRadicals.push(derivativeRadical);
+  }
 };
 
-export { radicals, generateRadicals };
+const getComposedMolecule = (firstRadical, secondRadical) => {
+  let molecule = _.cloneDeep(baseGraph);
+  molecule.nodes.push(...firstRadical.nodes);
+  molecule.nodes.push(...secondRadical.nodes);
+  molecule.edges.push(...firstRadical.edges);
+  molecule.edges.push(...secondRadical.edges);
+  const firstBracing = _.find(molecule.nodes, { bracing: 1 });
+  const secondBracing = _.find(molecule.nodes, { bracing: 2 });
+  firstRadical.nodes[0].x = FIRST_RADICAL_X;
+  firstRadical.nodes[0].y = FIRST_RADICAL_Y;
+  secondRadical.nodes[0].x = SECOND_RADICAL_X;
+  secondRadical.nodes[0].y = SECOND_RADICAL_Y;
+  molecule.edges.push({
+    from: firstRadical.nodes[0].id,
+    to: firstBracing.id,
+  });
+  molecule.edges.push({
+    from: secondRadical.nodes[0].id,
+    to: secondBracing.id,
+  });
+  return molecule;
+};
+
+const generateSpace = (firstRadical, secondRadical) => {
+  let derivedFirstRadicals = [firstRadical];
+  const convertFirstNodes = convertNode(derivedFirstRadicals);
+  firstRadical.nodes.forEach(convertFirstNodes);
+  let derivedSecondRadicals = [secondRadical];
+  const convertSecondNodes = convertNode(derivedSecondRadicals);
+  secondRadical.nodes.forEach(convertSecondNodes);
+
+  let space = {
+    nodes: [],
+    edges: [],
+  };
+  derivedFirstRadicals.forEach((leftRadical, leftIndex) => {
+    derivedSecondRadicals.forEach((rightRadical, rightIndex) => {
+      if (
+        space.nodes.some(node =>
+          node.leftRadical === rightRadical.formula && node.rightRadical === leftRadical.formula)
+      ) {
+        return;
+      }
+      const molecule = getComposedMolecule(leftRadical, rightRadical);
+      space.nodes.push({
+        id: `${leftIndex}${rightIndex}`,
+        label: `${leftRadical.formula} + ${rightRadical.formula}`,
+        leftRadical: leftRadical.formula,
+        rightRadical: rightRadical.formula,
+        structure: molecule,
+      });
+      if (rightIndex) {
+        space.edges.push({
+          from: `${leftIndex}${rightIndex}`,
+          to: `${leftIndex}${rightIndex - 1}`,
+        });
+      }
+      if (leftIndex) {
+        space.edges.push({
+          from: `${leftIndex}${rightIndex}`,
+          to: `${leftIndex - 1}${rightIndex}`,
+        });
+      }
+    });
+  });
+  console.log(space);
+
+  return space;
+};
+
+export { radicals, generateSpace };

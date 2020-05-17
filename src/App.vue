@@ -9,18 +9,13 @@
 <script>
 import vis from 'vis-network';
 import _ from 'lodash';
-import { baseGraph } from './config/graph';
-import { radicals, generateRadicals } from './config/radicals';
-const FIRST_RADICAL_X = 540;
-const FIRST_RADICAL_Y = 0;
-const SECOND_RADICAL_X = 0;
-const SECOND_RADICAL_Y = 540;
+import { radicals, generateSpace } from './config/radicals';
 
 export default {
   name: 'app',
   data() {
     return {
-      parents: [],
+      spaces: [],
       networks: [],
       count: 1,
       container: null,
@@ -39,13 +34,8 @@ export default {
       for (let i = 0; i < this.radicals.length; i++) {
         for (let j = i; j < this.radicals.length; j++) {
           const [firstRadical, secondRadical] = this.getRadicals(i, j);
-          const molecule = this.getComposedMolecule(firstRadical, secondRadical);
-          this.parents.push({
-            id: this.count,
-            label: `${firstRadical.formula} + ${secondRadical.formula}`,
-            structure: molecule,
-          });
-          this.count++;
+          const space = generateSpace(firstRadical, secondRadical);
+          this.spaces.push(space);
         }
       }
     },
@@ -61,45 +51,19 @@ export default {
       });
       return [firstRadical, secondRadical];
     },
-    getComposedMolecule(firstRadical, secondRadical) {
-      let molecule = _.cloneDeep(baseGraph);
-      molecule.nodes.push(...firstRadical.nodes);
-      molecule.nodes.push(...secondRadical.nodes);
-      molecule.edges.push(...firstRadical.edges);
-      molecule.edges.push(...secondRadical.edges);
-      const firstBracing = _.find(molecule.nodes, { bracing: 1 });
-      const secondBracing = _.find(molecule.nodes, { bracing: 2 });
-      firstRadical.nodes[0].x = FIRST_RADICAL_X;
-      firstRadical.nodes[0].y = FIRST_RADICAL_Y;
-      secondRadical.nodes[0].x = SECOND_RADICAL_X;
-      secondRadical.nodes[0].y = SECOND_RADICAL_Y;
-      molecule.edges.push({
-        from: firstRadical.nodes[0].id,
-        to: firstBracing.id,
-      });
-      molecule.edges.push({
-        from: secondRadical.nodes[0].id,
-        to: secondBracing.id,
-      });
-      return molecule;
-    },
     showGraph() {
       const fields = document.querySelector('.fields');
-      this.parents.forEach(parent => {
+      this.spaces.forEach(space => {
         let network = document.createElement('div');
         network.classList.add('network');
         fields.appendChild(network);
 
-        const data = {
-          nodes: [parent],
-          edges: [],
-        };
         const options = {
           layout: {
             improvedLayout: true,
           },
         };
-        const visNetwork = new vis.Network(network, data, options);
+        const visNetwork = new vis.Network(network, space, options);
         this.networks.push(visNetwork);
 
         visNetwork.on('click', (event) => {
@@ -107,7 +71,7 @@ export default {
           if (!node) {
             return;
           }
-          this.selectedNode = _.find(this.parents, { id: node });
+          this.selectedNode = _.find(space.nodes, { id: node });
           const childContainer = document.getElementById('child');
           childContainer.style.display = '';
           const data = {
@@ -118,7 +82,9 @@ export default {
           const closeButton = document.createElement('button');
           closeButton.innerHTML = 'Close';
           closeButton.id = 'child-close';
-          closeButton.onclick = () => {childContainer.style.display = 'none'};
+          closeButton.onclick = () => {
+            childContainer.style.display = 'none'
+          };
           childContainer.appendChild(closeButton);
         });
       });
@@ -144,8 +110,8 @@ body {
   flex-wrap: wrap;
 }
 .network {
-  width: calc(20% - 2px);
-  height: 350px;
+  width: calc(50% - 2px);
+  height: 875px;
   border: 1px solid blue;
 }
 .child {
