@@ -4,6 +4,7 @@ import { baseGraph } from "./graph";
 const radicals = [
   {
     id: 1,
+    neighbors: [2, 5, 6, 7, 8, 9, 10],
     formula: 'CH3',
     nodes: [
       {
@@ -41,6 +42,7 @@ const radicals = [
   },
   {
     id: 2,
+    neighbors: [1, 3],
     formula: 'C2H5',
     nodes: [
       {
@@ -102,202 +104,203 @@ const radicals = [
   },
   {
     id: 3,
-    complexFormula: '(CH3)2CH',
+    neighbors: [2, 4],
     formula: 'C3H7',
     nodes: [
       {
-        id: 12,
+        id: 83,
         label: 'C',
         physics: false,
       },
       {
-        id: 13,
+        id: 84,
         label: 'C',
       },
       {
-        id: 14,
+        id: 85,
         label: 'C',
       },
       {
-        id: 15,
+        id: 86,
         label: 'H',
       },
       {
-        id: 16,
+        id: 87,
         label: 'H',
       },
       {
-        id: 17,
+        id: 88,
         label: 'H',
       },
       {
-        id: 18,
+        id: 89,
         label: 'H',
       },
       {
-        id: 19,
+        id: 90,
         label: 'H',
       },
       {
-        id: 20,
+        id: 91,
         label: 'H',
       },
       {
-        id: 21,
+        id: 92,
         label: 'H',
       },
     ],
     edges: [
       {
-        from: 13,
-        to: 12,
+        from: 83,
+        to: 84,
       },
       {
-        from: 14,
-        to: 12,
+        from: 84,
+        to: 85,
       },
       {
-        from: 15,
-        to: 12,
+        from: 83,
+        to: 86,
       },
       {
-        from: 16,
-        to: 13,
+        from: 83,
+        to: 87,
       },
       {
-        from: 17,
-        to: 13,
+        from: 84,
+        to: 88,
       },
       {
-        from: 18,
-        to: 13,
+        from: 84,
+        to: 89,
       },
       {
-        from: 19,
-        to: 14,
+        from: 85,
+        to: 90,
       },
       {
-        from: 20,
-        to: 14,
+        from: 85,
+        to: 91,
       },
       {
-        from: 21,
-        to: 14,
+        from: 85,
+        to: 92,
       },
     ],
   },
   {
     id: 4,
-    complexFormula: '(CH3)3C',
+    neighbors: [3],
     formula: 'C4H9',
     nodes: [
       {
-        id: 22,
+        id: 70,
         label: 'C',
         physics: false,
       },
       {
-        id: 23,
+        id: 71,
         label: 'C',
       },
       {
-        id: 24,
+        id: 72,
         label: 'C',
       },
       {
-        id: 25,
+        id: 73,
         label: 'C',
       },
       {
-        id: 26,
+        id: 74,
         label: 'H',
       },
       {
-        id: 27,
+        id: 75,
         label: 'H',
       },
       {
-        id: 28,
+        id: 76,
         label: 'H',
       },
       {
-        id: 29,
+        id: 77,
         label: 'H',
       },
       {
-        id: 30,
+        id: 78,
         label: 'H',
       },
       {
-        id: 31,
+        id: 79,
         label: 'H',
       },
       {
-        id: 32,
+        id: 80,
         label: 'H',
       },
       {
-        id: 33,
+        id: 81,
         label: 'H',
       },
       {
-        id: 34,
+        id: 82,
         label: 'H',
       },
     ],
     edges: [
       {
-        from: 23,
-        to: 22,
+        from: 70,
+        to: 71,
       },
       {
-        from: 24,
-        to: 22,
+        from: 71,
+        to: 72,
       },
       {
-        from: 25,
-        to: 22,
+        from: 71,
+        to: 73,
       },
       {
-        from: 26,
-        to: 23,
+        from: 70,
+        to: 74,
       },
       {
-        from: 27,
-        to: 23,
+        from: 70,
+        to: 75,
       },
       {
-        from: 28,
-        to: 23,
+        from: 72,
+        to: 76,
       },
       {
-        from: 29,
-        to: 24,
+        from: 72,
+        to: 77,
       },
       {
-        from: 30,
-        to: 24,
+        from: 72,
+        to: 78,
       },
       {
-        from: 31,
-        to: 24,
+        from: 71,
+        to: 79,
       },
       {
-        from: 32,
-        to: 25,
+        from: 73,
+        to: 80,
       },
       {
-        from: 33,
-        to: 25,
+        from: 73,
+        to: 81,
       },
       {
-        from: 34,
-        to: 25,
+        from: 73,
+        to: 82,
       },
     ],
   },
   {
     id: 5,
+    neighbors: [1, 6, 7, 8, 9, 10],
     formula: 'C4H3O',
     nodes: [
       {
@@ -379,6 +382,7 @@ const radicals = [
   },
   {
     id: 6,
+    neighbors: [1, 5, 7, 8, 9, 10],
     formula: 'C4H3S',
     nodes: [
       {
@@ -460,6 +464,7 @@ const radicals = [
   },
   {
     id: 7,
+    neighbors: [1, 5, 6, 8, 9, 10],
     formula: 'C4H3Se',
     nodes: [
       {
@@ -541,6 +546,7 @@ const radicals = [
   },
   {
     id: 8,
+    neighbors: [1, 5, 6, 7, 9, 10],
     formula: 'C6H5',
     nodes: [
       {
@@ -650,195 +656,199 @@ const radicals = [
   },
   {
     id: 9,
-    formula: 'C4H9',
+    neighbors: [1, 5, 6, 7, 8, 10],
+    complexFormula: '(CH3)2CH',
+    formula: 'C3H7',
     nodes: [
       {
-        id: 70,
+        id: 12,
         label: 'C',
         physics: false,
       },
       {
-        id: 71,
+        id: 13,
         label: 'C',
       },
       {
-        id: 72,
+        id: 14,
         label: 'C',
       },
       {
-        id: 73,
-        label: 'C',
-      },
-      {
-        id: 74,
+        id: 15,
         label: 'H',
       },
       {
-        id: 75,
+        id: 16,
         label: 'H',
       },
       {
-        id: 76,
+        id: 17,
         label: 'H',
       },
       {
-        id: 77,
+        id: 18,
         label: 'H',
       },
       {
-        id: 78,
+        id: 19,
         label: 'H',
       },
       {
-        id: 79,
+        id: 20,
         label: 'H',
       },
       {
-        id: 80,
-        label: 'H',
-      },
-      {
-        id: 81,
-        label: 'H',
-      },
-      {
-        id: 82,
+        id: 21,
         label: 'H',
       },
     ],
     edges: [
       {
-        from: 70,
-        to: 71,
+        from: 13,
+        to: 12,
       },
       {
-        from: 71,
-        to: 72,
+        from: 14,
+        to: 12,
       },
       {
-        from: 71,
-        to: 73,
+        from: 15,
+        to: 12,
       },
       {
-        from: 70,
-        to: 74,
+        from: 16,
+        to: 13,
       },
       {
-        from: 70,
-        to: 75,
+        from: 17,
+        to: 13,
       },
       {
-        from: 72,
-        to: 76,
+        from: 18,
+        to: 13,
       },
       {
-        from: 72,
-        to: 77,
+        from: 19,
+        to: 14,
       },
       {
-        from: 72,
-        to: 78,
+        from: 20,
+        to: 14,
       },
       {
-        from: 71,
-        to: 79,
-      },
-      {
-        from: 73,
-        to: 80,
-      },
-      {
-        from: 73,
-        to: 81,
-      },
-      {
-        from: 73,
-        to: 82,
+        from: 21,
+        to: 14,
       },
     ],
   },
   {
     id: 10,
-    formula: 'C3H7',
+    neighbors: [1, 5, 6, 7, 8, 9],
+    complexFormula: '(CH3)3C',
+    formula: 'C4H9',
     nodes: [
       {
-        id: 83,
+        id: 22,
         label: 'C',
         physics: false,
       },
       {
-        id: 84,
+        id: 23,
         label: 'C',
       },
       {
-        id: 85,
+        id: 24,
         label: 'C',
       },
       {
-        id: 86,
+        id: 25,
+        label: 'C',
+      },
+      {
+        id: 26,
         label: 'H',
       },
       {
-        id: 87,
+        id: 27,
         label: 'H',
       },
       {
-        id: 88,
+        id: 28,
         label: 'H',
       },
       {
-        id: 89,
+        id: 29,
         label: 'H',
       },
       {
-        id: 90,
+        id: 30,
         label: 'H',
       },
       {
-        id: 91,
+        id: 31,
         label: 'H',
       },
       {
-        id: 92,
+        id: 32,
+        label: 'H',
+      },
+      {
+        id: 33,
+        label: 'H',
+      },
+      {
+        id: 34,
         label: 'H',
       },
     ],
     edges: [
       {
-        from: 83,
-        to: 84,
+        from: 23,
+        to: 22,
       },
       {
-        from: 84,
-        to: 85,
+        from: 24,
+        to: 22,
       },
       {
-        from: 83,
-        to: 86,
+        from: 25,
+        to: 22,
       },
       {
-        from: 83,
-        to: 87,
+        from: 26,
+        to: 23,
       },
       {
-        from: 84,
-        to: 88,
+        from: 27,
+        to: 23,
       },
       {
-        from: 84,
-        to: 89,
+        from: 28,
+        to: 23,
       },
       {
-        from: 85,
-        to: 90,
+        from: 29,
+        to: 24,
       },
       {
-        from: 85,
-        to: 91,
+        from: 30,
+        to: 24,
       },
       {
-        from: 85,
-        to: 92,
+        from: 31,
+        to: 24,
+      },
+      {
+        from: 32,
+        to: 25,
+      },
+      {
+        from: 33,
+        to: 25,
+      },
+      {
+        from: 34,
+        to: 25,
       },
     ],
   },
@@ -901,6 +911,7 @@ const getComposedMolecule = (firstRadical, secondRadical) => {
   return molecule;
 };
 
+let count = 0;
 const generateSpace = (firstRadical, secondRadical) => {
   let derivedFirstRadicals = [firstRadical];
   const convertFirstNodes = convertNode(derivedFirstRadicals);
@@ -917,33 +928,34 @@ const generateSpace = (firstRadical, secondRadical) => {
     derivedSecondRadicals.forEach((rightRadical, rightIndex) => {
       if (
         space.nodes.some(node =>
-          node.leftRadical === rightRadical.formula && node.rightRadical === leftRadical.formula)
+          node.leftRadical.formula === rightRadical.formula && node.rightRadical.formula === leftRadical.formula)
       ) {
         return;
       }
       const molecule = getComposedMolecule(leftRadical, rightRadical);
       space.nodes.push({
-        id: `${leftIndex}${rightIndex}`,
+        id: `${count}${leftIndex}${rightIndex}`,
         label: `${leftRadical.formula} + ${rightRadical.formula}`,
-        leftRadical: leftRadical.formula,
-        rightRadical: rightRadical.formula,
+        isRoot: leftIndex === 0 && rightIndex === 0,
+        leftRadical: leftRadical,
+        rightRadical: rightRadical,
         structure: molecule,
       });
       if (rightIndex) {
         space.edges.push({
-          from: `${leftIndex}${rightIndex}`,
-          to: `${leftIndex}${rightIndex - 1}`,
+          from: `${count}${leftIndex}${rightIndex}`,
+          to: `${count}${leftIndex}${rightIndex - 1}`,
         });
       }
       if (leftIndex) {
         space.edges.push({
-          from: `${leftIndex}${rightIndex}`,
-          to: `${leftIndex - 1}${rightIndex}`,
+          from: `${count}${leftIndex}${rightIndex}`,
+          to: `${count}${leftIndex - 1}${rightIndex}`,
         });
       }
     });
   });
-  console.log(space);
+  count++;
 
   return space;
 };

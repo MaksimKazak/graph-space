@@ -22,6 +22,10 @@ export default {
       childNetwork: null,
       selectedNode: null,
       radicals,
+      space: {
+        nodes: [],
+        edges: [],
+      },
     };
   },
   mounted() {
@@ -38,6 +42,23 @@ export default {
           this.spaces.push(space);
         }
       }
+      this.spaces.forEach(space => {
+        this.space.nodes.push(...space.nodes);
+        this.space.edges.push(...space.edges);
+      });
+      const spaceRoots = this.space.nodes.filter(node => node.isRoot);
+      spaceRoots.forEach(firstNode => {
+        spaceRoots.forEach(secondNode => {
+          const connected = firstNode.leftRadical.neighbors.some(neighborId => secondNode.leftRadical.id === neighborId)
+            || firstNode.rightRadical.neighbors.some(neighborId => secondNode.rightRadical.id === neighborId);
+          if (connected) {
+            this.space.edges.push({
+              to: firstNode.id,
+              from: secondNode.id,
+            });
+          }
+        })
+      });
     },
     getRadicals(i, j) {
       const firstRadical = _.cloneDeep(this.radicals[i]);
