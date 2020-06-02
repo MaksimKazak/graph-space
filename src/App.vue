@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="fields"></div>
+    <div id="network"></div>
     <div id="child" class="child" style="display: none">
     </div>
   </div>
@@ -73,41 +73,35 @@ export default {
       return [firstRadical, secondRadical];
     },
     showGraph() {
-      const fields = document.querySelector('.fields');
-      this.spaces.forEach(space => {
-        let network = document.createElement('div');
-        network.classList.add('network');
-        fields.appendChild(network);
+      const options = {
+        layout: {
+          improvedLayout: true,
+        },
+      };
+      const network = document.getElementById('network');
+      const visNetwork = new vis.Network(network, this.space, options);
+      this.networks.push(visNetwork);
 
-        const options = {
-          layout: {
-            improvedLayout: true,
-          },
+      visNetwork.on('click', (event) => {
+        const node = event.nodes[0];
+        if (!node) {
+          return;
+        }
+        this.selectedNode = _.find(this.space.nodes, { id: node });
+        const childContainer = document.getElementById('child');
+        childContainer.style.display = '';
+        const data = {
+          nodes: new vis.DataSet(this.selectedNode.structure.nodes),
+          edges: new vis.DataSet(this.selectedNode.structure.edges),
         };
-        const visNetwork = new vis.Network(network, space, options);
-        this.networks.push(visNetwork);
-
-        visNetwork.on('click', (event) => {
-          const node = event.nodes[0];
-          if (!node) {
-            return;
-          }
-          this.selectedNode = _.find(space.nodes, { id: node });
-          const childContainer = document.getElementById('child');
-          childContainer.style.display = '';
-          const data = {
-            nodes: new vis.DataSet(this.selectedNode.structure.nodes),
-            edges: new vis.DataSet(this.selectedNode.structure.edges),
-          };
-          this.childNetwork = new vis.Network(childContainer, data, options);
-          const closeButton = document.createElement('button');
-          closeButton.innerHTML = 'Close';
-          closeButton.id = 'child-close';
-          closeButton.onclick = () => {
-            childContainer.style.display = 'none'
-          };
-          childContainer.appendChild(closeButton);
-        });
+        this.childNetwork = new vis.Network(childContainer, data, options);
+        const closeButton = document.createElement('button');
+        closeButton.innerHTML = 'Close';
+        closeButton.id = 'child-close';
+        closeButton.onclick = () => {
+          childContainer.style.display = 'none'
+        };
+        childContainer.appendChild(closeButton);
       });
     },
   },
