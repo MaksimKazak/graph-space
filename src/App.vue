@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="network"></div>
+    <div id="network" class="network"></div>
     <div id="child" class="child" style="display: none">
     </div>
   </div>
@@ -10,6 +10,7 @@
 import vis from 'vis-network';
 import _ from 'lodash';
 import { radicals, generateSpace } from './config/radicals';
+import { baseGraph } from './config/graph';
 
 export default {
   name: 'app',
@@ -17,7 +18,6 @@ export default {
     return {
       spaces: [],
       networks: [],
-      count: 1,
       container: null,
       childNetwork: null,
       selectedNode: null,
@@ -31,6 +31,7 @@ export default {
   mounted() {
     this.container = document.getElementById('mynetwork');
     this.startAlgorithm();
+    // this.showSomething();
     this.showGraph();
   },
   methods: {
@@ -43,12 +44,16 @@ export default {
         }
       }
       this.spaces.forEach(space => {
-        this.space.nodes.push(...space.nodes);
-        this.space.edges.push(...space.edges);
+        this.space.nodes.push({
+          id: space.nodes[0].id,
+          label: space.nodes[0].label,
+          leftRadical: space.nodes[0].leftRadical,
+          rightRadical: space.nodes[0].rightRadical,
+          structure: space,
+        });
       });
-      const spaceRoots = this.space.nodes.filter(node => node.isRoot);
-      spaceRoots.forEach(firstNode => {
-        spaceRoots.forEach(secondNode => {
+      this.space.nodes.forEach(firstNode => {
+        this.space.nodes.forEach(secondNode => {
           const connected = firstNode.leftRadical.neighbors.some(neighborId => secondNode.leftRadical.id === neighborId)
             || firstNode.rightRadical.neighbors.some(neighborId => secondNode.rightRadical.id === neighborId);
           if (connected) {
@@ -79,7 +84,10 @@ export default {
         },
       };
       const network = document.getElementById('network');
-      const visNetwork = new vis.Network(network, this.space, options);
+      const visNetwork = new vis.Network(network, this.space, {
+        ...options,
+        physics: false,
+      });
       this.networks.push(visNetwork);
 
       visNetwork.on('click', (event) => {
@@ -102,7 +110,48 @@ export default {
           childContainer.style.display = 'none'
         };
         childContainer.appendChild(closeButton);
+
+        this.childNetwork.on('click', (event) => {
+          const node = event.nodes[0];
+          if (!node) {
+            return;
+          }
+          this.selectedNode = _.find(this.selectedNode.structure.nodes, { id: node });
+          const childContainer = document.getElementById('child');
+          childContainer.style.display = '';
+          const data = {
+            nodes: new vis.DataSet(this.selectedNode.structure.nodes),
+            edges: new vis.DataSet(this.selectedNode.structure.edges),
+          };
+          this.childNetwork = new vis.Network(childContainer, data, options);
+          const closeButton = document.createElement('button');
+          closeButton.innerHTML = 'Close';
+          closeButton.id = 'child-close';
+          closeButton.onclick = () => {
+            childContainer.style.display = 'none'
+          };
+          childContainer.appendChild(closeButton);
+        });
       });
+    },
+    showSomething() {
+      const options = {
+        layout: {
+          improvedLayout: true,
+        },
+      };
+      const network = document.getElementById('network');
+      const visNetwork = new vis.Network(network, baseGraph, {
+        ...options,
+      });
+      this.networks.push(visNetwork);
+    }
+  },
+  computed: {
+    count() {
+      return this.spaces.reduce((acc, space) => {
+        return acc + space.nodes.length;
+      }, 0);
     },
   },
 };
@@ -125,13 +174,13 @@ body {
   flex-wrap: wrap;
 }
 .network {
-  width: calc(50% - 2px);
-  height: 875px;
+  width: 100vw;
+  height: 100vh;
   border: 1px solid blue;
 }
 .child {
-  width: 600px;
-  height: 600px;
+  width: 1000px;
+  height: 1000px;
   position: fixed;
   top: 0;
   left: 0;

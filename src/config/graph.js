@@ -51,6 +51,14 @@ const baseGraph = {
       y: 400,
       physics: false,
     },
+    // {
+    //   id: -8,
+    //   label: 'R1',
+    // },
+    // {
+    //   id: -9,
+    //   label: 'R2',
+    // },
   ],
   edges: [
     {from: -1, to: -2, color: '#277dea'},
@@ -60,8 +68,8 @@ const baseGraph = {
     {from: -4, to: -6, color: '#277dea'},
     {from: -5, to: -6, color: '#277dea'},
     {from: -6, to: -7, color: '#277dea'},
-    // {from: 4, to: 8, color: '#277dea'},
-    // {from: 5, to: 9, color: '#277dea'},
+    // {from: -4, to: -8, color: '#277dea'},
+    // {from: -5, to: -9, color: '#277dea'},
   ]
 };
 

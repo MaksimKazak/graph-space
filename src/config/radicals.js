@@ -257,7 +257,7 @@ const radicals = [
         to: 72,
       },
       {
-        from: 71,
+        from: 72,
         to: 73,
       },
       {
@@ -269,11 +269,11 @@ const radicals = [
         to: 75,
       },
       {
-        from: 72,
+        from: 71,
         to: 76,
       },
       {
-        from: 72,
+        from: 71,
         to: 77,
       },
       {
@@ -281,7 +281,7 @@ const radicals = [
         to: 78,
       },
       {
-        from: 71,
+        from: 72,
         to: 79,
       },
       {
@@ -935,7 +935,7 @@ const generateSpace = (firstRadical, secondRadical) => {
       const molecule = getComposedMolecule(leftRadical, rightRadical);
       space.nodes.push({
         id: `${count}${leftIndex}${rightIndex}`,
-        label: `${leftRadical.formula} + ${rightRadical.formula}`,
+        label: `${leftRadical.complexFormula || leftRadical.formula} + ${rightRadical.complexFormula || rightRadical.formula}`,
         isRoot: leftIndex === 0 && rightIndex === 0,
         leftRadical: leftRadical,
         rightRadical: rightRadical,
